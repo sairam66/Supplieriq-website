@@ -3,260 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ireland Supply Chain Pulse</title>
-    <link rel="stylesheet" href="premium_style.css">
+    <title>Ireland Supply Chain Pulse - Live Data Analytics</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
 </head>
 <body>
-    <!-- Authentication Section -->
-    <section id="auth-section" class="auth-section active">
-        <div class="auth-container">
-            <div class="auth-card">
-                <!-- Enhanced Auth Header -->
-                <div class="auth-header">
-                    <div class="logo-large">
-                        <h1>Ireland Supply Chain Pulse</h1>
-                        <p class="tagline">Professional Supply Chain Analytics Platform</p>
-                    </div>
-                </div>
+    <!-- Authentication Container (Default View) -->
+    <div id="auth-container" class="auth-container active">
+        <div class="auth-background">
+            <div class="supply-chain-network">
+                <div class="network-node" style="top: 10%; left: 15%;"></div>
+                <div class="network-node" style="top: 25%; left: 85%;"></div>
+                <div class="network-node" style="top: 60%; left: 20%;"></div>
+                <div class="network-node" style="top: 75%; left: 70%;"></div>
+                <div class="network-node" style="top: 40%; left: 60%;"></div>
+                <div class="connection-line" data-from="1" data-to="2"></div>
+                <div class="connection-line" data-from="2" data-to="3"></div>
+                <div class="connection-line" data-from="3" data-to="4"></div>
+                <div class="connection-line" data-from="4" data-to="5"></div>
+                <div class="connection-line" data-from="1" data-to="5"></div>
+            </div>
+        </div>
 
-                <!-- Premium Tab System -->
-                <div class="auth-tabs">
-                    <button class="auth-tab active" data-tab="login">Sign In</button>
-                    <button class="auth-tab" data-tab="signup">Create Account</button>
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <div class="logo-icon">ISC</div>
+                    <h1>Ireland Supply Chain Pulse</h1>
                 </div>
+                <p class="subtitle">Live Data Analytics Platform</p>
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span>Real-time Data</span>
+                </div>
+            </div>
 
-                <!-- Sign In Form -->
-                <form id="login-form" class="auth-form active">
-                    <div class="form">
-                        <div class="form-group">
-                            <label for="loginEmail" class="form-label">Email or Username</label>
-                            <input type="text" id="loginEmail" class="form-control" 
-                                   placeholder="Enter your email or username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword" class="form-label">Password</label>
-                            <input type="password" id="loginPassword" class="form-control" 
-                                   placeholder="Enter your password" required>
-                        </div>
-                        <button type="submit" class="btn btn--primary btn--full-width btn--lg">
-                            <span class="btn-text">Sign In</span>
-                        </button>
+            <!-- Tab Navigation -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail" class="form-label">Email or Username</label>
+                        <input type="text" id="loginEmail" class="form-control" placeholder="Enter your email or username" required>
                     </div>
-                    <div class="auth-links">
-                        <p>Don't have an account? <a href="#" class="auth-link" onclick="switchTab('signup')">Create one</a></p>
+                    <div class="form-group">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
                     </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Access Live Dashboard</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                    <div id="login-error" class="error-message"></div>
                 </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <button class="link-btn" onclick="switchTab('signup')">Sign up</button></p>
+                </div>
+            </div>
 
-                <!-- Sign Up Form -->
-                <form id="signup-form" class="auth-form">
-                    <div class="form">
-                        <div class="form-group">
-                            <label for="signupUsername" class="form-label">Username</label>
-                            <input type="text" id="signupUsername" class="form-control" 
-                                   placeholder="Choose a username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signupEmail" class="form-label">Email Address</label>
-                            <input type="email" id="signupEmail" class="form-control" 
-                                   placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signupPassword" class="form-label">Password</label>
-                            <input type="password" id="signupPassword" class="form-control" 
-                                   placeholder="Create a password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" id="confirmPassword" class="form-control" 
-                                   placeholder="Confirm your password" required>
-                        </div>
-                        <button type="submit" class="btn btn--primary btn--full-width btn--lg">
-                            <span class="btn-text">Create Account</span>
-                        </button>
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupUsername" class="form-label">Username</label>
+                        <input type="text" id="signupUsername" class="form-control" placeholder="Choose a username" required>
                     </div>
-                    <div class="auth-links">
-                        <p>Already have an account? <a href="#" class="auth-link" onclick="switchTab('login')">Sign in</a></p>
+                    <div class="form-group">
+                        <label for="signupEmail" class="form-label">Email Address</label>
+                        <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email" required>
                     </div>
+                    <div class="form-group">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <input type="password" id="signupPassword" class="form-control" placeholder="Create a password" required>
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Create Account</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                    <div id="signup-error" class="error-message"></div>
                 </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Email Verification Section -->
-    <section id="verification-section" class="auth-section">
-        <div class="auth-container">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <div class="logo-large">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">📧</div>
-                        <h1>Verify Your Email</h1>
-                        <p class="tagline">We've sent a verification email to <span id="verification-email"></span></p>
-                    </div>
-                </div>
-                <div class="auth-form active">
-                    <div class="form">
-                        <p style="text-align: center; color: var(--color-text-light); margin-bottom: 2rem;">
-                            Please check your inbox and click the verification link to activate your account.
-                        </p>
-                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                            <button id="resendVerification" class="btn btn--secondary">Resend Email</button>
-                            <button id="changeEmail" class="btn btn--secondary">Change Email</button>
-                        </div>
-                        <div id="verification-status" style="margin-top: 1rem; text-align: center;"></div>
-                    </div>
+                <div class="auth-footer">
+                    <p>Already have an account? <button class="link-btn" onclick="switchTab('login')">Login</button></p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Subscription Selection Section -->
-    <section id="subscription-section" class="auth-section">
-        <div class="auth-container" style="align-items: flex-start; padding-top: 2rem;">
-            <div style="width: 100%; max-width: 1200px;">
-                <div class="section-header">
-                    <h1 class="section-title">Choose Your Plan</h1>
-                    <p class="section-subtitle">Select the plan that best fits your supply chain analytics needs</p>
-                    <div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: rgba(255, 122, 0, 0.1); 
-                                border-radius: 1rem; border: 1px solid rgba(255, 122, 0, 0.2); display: inline-block;">
-                        <span style="background: var(--color-orange-500); color: white; padding: 0.25rem 0.75rem; 
-                                     border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; margin-right: 0.5rem;">
-                            TESTING VERSION
-                        </span>
-                        All plans are currently free during our testing period
-                    </div>
-                </div>
+    <!-- Email Verification Container -->
+    <div id="verification-container" class="verification-container">
+        <div class="verification-card">
+            <div class="verification-icon">📧</div>
+            <h2>Verify Your Email</h2>
+            <p>We've sent a verification email to <span id="verification-email"></span></p>
+            <p>Please check your inbox and click the verification link to activate your account.</p>
+            <div class="verification-actions">
+                <button id="resendVerification" class="btn btn-secondary">Resend Email</button>
+                <button id="changeEmail" class="btn btn-outline">Change Email</button>
+            </div>
+            <div class="verification-status" id="verification-status"></div>
+        </div>
+    </div>
 
-                <div class="card-grid grid-3">
-                    <!-- Free Plan -->
-                    <div class="card" data-plan="free" style="cursor: pointer;">
-                        <div class="card-header">
-                            <div>
-                                <h3 class="card-title">Free</h3>
-                                <div class="card-metric">€0<span style="font-size: 1rem; color: var(--color-text-light);">/month</span></div>
-                                <p class="card-subtitle">Perfect for starters</p>
-                            </div>
-                        </div>
-                        <div class="features-list">
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Basic dashboard access</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">1 data upload per month</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Standard reports</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Email support</span>
-                            </div>
-                        </div>
-                        <button class="btn btn--secondary btn--full-width" style="margin-top: 2rem;">Select Free</button>
-                    </div>
-
-                    <!-- Lite Plan -->
-                    <div class="card" data-plan="lite" style="cursor: pointer; border-color: var(--color-teal-500);">
-                        <div class="card-header">
-                            <div>
-                                <span class="card-badge" style="background: var(--color-teal-600); color: white;">Most Popular</span>
-                                <h3 class="card-title">Lite</h3>
-                                <div class="card-metric">€29<span style="font-size: 1rem; color: var(--color-text-light);">/month</span></div>
-                                <p class="card-subtitle">Great for SMEs</p>
-                            </div>
-                        </div>
-                        <div class="features-list">
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Enhanced analytics dashboard</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">5 data uploads per month</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Advanced reporting</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Priority email support</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Supply chain insights</span>
-                            </div>
-                        </div>
-                        <button class="btn btn--primary btn--full-width" style="margin-top: 2rem;">Select Lite</button>
-                    </div>
-
-                    <!-- Paid Max Plan -->
-                    <div class="card" data-plan="paid_max" style="cursor: pointer;">
-                        <div class="card-header">
-                            <div>
-                                <h3 class="card-title">Paid Max</h3>
-                                <div class="card-metric">€99<span style="font-size: 1rem; color: var(--color-text-light);">/month</span></div>
-                                <p class="card-subtitle">Enterprise ready</p>
-                            </div>
-                        </div>
-                        <div class="features-list">
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Unlimited data uploads</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">AI-powered predictions</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">Custom reports & dashboards</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">API access</span>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">✓</div>
-                                <span class="feature-text">24/7 phone support</span>
-                            </div>
-                        </div>
-                        <button class="btn btn--primary btn--full-width" style="margin-top: 2rem;">Select Max</button>
-                    </div>
-                </div>
+    <!-- Subscription Selection Container -->
+    <div id="subscription-container" class="subscription-container">
+        <div class="subscription-header">
+            <h1>Choose Your Plan</h1>
+            <p>Select the plan that best fits your supply chain analytics needs</p>
+            <div class="live-data-notice">
+                <span class="live-badge">LIVE DATA</span>
+                Real-time data from Irish trade APIs, World Bank, OECD, and Dublin Port
             </div>
         </div>
-    </section>
 
-    <!-- Platform Section -->
-    <section id="platform-section" class="platform-section">
-        <!-- Premium Navigation -->
-        <nav class="platform-nav">
-            <div class="nav-container">
+        <div class="subscription-plans">
+            <!-- Free Plan -->
+            <div class="plan-card" data-plan="free">
+                <div class="plan-header">
+                    <h3>Free</h3>
+                    <div class="plan-price">€0<span class="price-period">/month</span></div>
+                    <div class="plan-badge free-badge">Live Data Access</div>
+                </div>
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Live dashboard with real-time data</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>1 data upload per month</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Standard PDF reports</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Email support</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Community access</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline plan-btn">Select Free</button>
+            </div>
+
+            <!-- Lite Plan -->
+            <div class="plan-card popular" data-plan="lite">
+                <div class="plan-header">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Lite</h3>
+                    <div class="plan-price">€29<span class="price-period">/month</span></div>
+                    <div class="plan-badge lite-badge">Enhanced Analytics</div>
+                </div>
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Real-time analytics dashboard</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>5 data uploads per month</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Advanced PDF reporting</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Priority email support</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Live supply chain insights</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Market benchmarking tools</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary plan-btn">Select Lite</button>
+            </div>
+
+            <!-- Paid Max Plan -->
+            <div class="plan-card" data-plan="paid_max">
+                <div class="plan-header">
+                    <h3>Paid Max</h3>
+                    <div class="plan-price">€99<span class="price-period">/month</span></div>
+                    <div class="plan-badge max-badge">Enterprise API</div>
+                </div>
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Unlimited data uploads</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>AI-powered predictions</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Custom reports & dashboards</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Direct API access</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>24/7 phone support</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>White-label options</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>Priority data feeds</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary plan-btn">Select Max</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Platform Container -->
+    <div id="platform-container" class="platform-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
                 <div class="nav-brand">
-                    <div class="brand-logo">ISC</div>
-                    <div class="brand-text">
-                        <h2>Ireland Supply Chain Pulse</h2>
-                        <p class="brand-subtitle">Professional Analytics Platform</p>
+                    <div class="nav-logo">ISC</div>
+                    <h3>Ireland Supply Chain Pulse</h3>
+                    <div class="live-status">
+                        <span class="live-dot"></span>
+                        <span>Live Data</span>
                     </div>
                 </div>
                 <div class="nav-menu">
                     <button class="nav-item active" data-page="home">Home</button>
-                    <button class="nav-item" data-page="dashboard">Dashboard</button>
+                    <button class="nav-item" data-page="dashboard">Live Dashboard</button>
                     <button class="nav-item" data-page="upload">Data Upload</button>
                     <button class="nav-item" data-page="case-studies">Case Studies</button>
                     <button class="nav-item" data-page="about">About</button>
                     <button class="nav-item" data-page="contact">Contact</button>
                 </div>
                 <div class="nav-user">
-                    <span id="user-plan-badge" class="user-badge">Free</span>
-                    <span id="user-name" class="user-name">User</span>
-                    <button id="logoutBtn" class="btn btn--sm">Logout</button>
+                    <div class="user-info">
+                        <span id="user-plan-badge" class="plan-badge">Free</span>
+                        <span id="user-name">User</span>
+                    </div>
+                    <button id="logoutBtn" class="btn btn-outline btn-sm">Logout</button>
                 </div>
             </div>
         </nav>
@@ -265,122 +277,523 @@
         <div class="platform-content">
             <!-- Home Page -->
             <div id="home-page" class="page active">
-                <div class="hero-section">
+                <section class="hero">
                     <div class="container">
                         <div class="hero-content">
-                            <h1 class="hero-title">Welcome to Ireland Supply Chain Pulse</h1>
-                            <p class="hero-subtitle">Live Dashboard + Analytics for Irish Supply Chain Professionals</p>
+                            <h1>Welcome to Ireland Supply Chain Pulse</h1>
+                            <p class="hero-tagline">Live Dashboard + Real-time Analytics for Irish Supply Chain Professionals</p>
+                            <div class="live-data-showcase">
+                                <div class="data-preview">
+                                    <span class="data-label">Live Total Trade:</span>
+                                    <span class="data-value" id="live-trade-value">Loading...</span>
+                                </div>
+                                <div class="data-preview">
+                                    <span class="data-label">Dublin Port Activity:</span>
+                                    <span class="data-value" id="live-port-value">Loading...</span>
+                                </div>
+                            </div>
                             <div class="hero-actions">
-                                <button class="btn btn--primary btn--lg" data-page="dashboard">View Dashboard</button>
-                                <button class="btn btn--secondary btn--lg" data-page="upload">Upload Data</button>
+                                <button class="btn btn-primary btn-lg" data-page="dashboard">View Live Dashboard</button>
+                                <button class="btn btn-outline btn-lg" data-page="upload">Upload Data</button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <!-- Dashboard Page -->
+            <!-- Dashboard Page with Live Data -->
             <div id="dashboard-page" class="page">
                 <div class="container">
-                    <div class="section-header">
-                        <h1 class="section-title">Supply Chain Dashboard</h1>
-                        <p class="section-subtitle">Real-time analytics and insights for Irish supply chain performance</p>
-                        <div style="margin-top: 2rem;">
-                            <button class="btn btn--primary" onclick="generateDashboardPDF()">📊 Download PDF Report</button>
-                            <span style="margin-left: 1rem; color: var(--color-text-light); font-size: 0.9rem;">Last updated: September 2025</span>
+                    <div class="page-header">
+                        <h2>Live Supply Chain Dashboard</h2>
+                        <div class="page-actions">
+                            <div class="data-status">
+                                <span class="status-indicator live"></span>
+                                <span>Data updated: <span id="last-updated">--</span></span>
+                            </div>
+                            <button class="btn btn-primary" onclick="generateLiveDashboardPDF()">📊 Download Live PDF Report</button>
+                            <button class="btn btn-outline" onclick="refreshLiveData()">🔄 Refresh Data</button>
                         </div>
                     </div>
 
-                    <!-- KPI Cards -->
-                    <div class="card-grid grid-4" style="margin-bottom: 3rem;">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Total Trade Volume</h3>
-                                <span class="card-badge">↗ +5.2%</span>
+                    <!-- Live KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card live-card">
+                            <div class="kpi-header">
+                                <h3>Total Trade Volume</h3>
+                                <span class="kpi-trend" id="trade-trend">Loading...</span>
                             </div>
-                            <div class="card-metric">€1.063T</div>
-                            <p class="card-subtitle">Exports: €564B | Imports: €499B</p>
+                            <div class="kpi-value" id="live-total-trade">Loading...</div>
+                            <div class="kpi-subtitle" id="trade-breakdown">Fetching live data...</div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Dublin Port Throughput</h3>
-                                <span class="card-badge">↗ +2.8%</span>
+                        <div class="kpi-card live-card">
+                            <div class="kpi-header">
+                                <h3>Dublin Port Activity</h3>
+                                <span class="kpi-trend" id="port-trend">Loading...</span>
                             </div>
-                            <div class="card-metric">35.2M</div>
-                            <p class="card-subtitle">Tonnes handled (2025)</p>
+                            <div class="kpi-value" id="live-port-throughput">Loading...</div>
+                            <div class="kpi-subtitle" id="port-subtitle">Real-time port data</div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Container Traffic</h3>
-                                <span class="card-badge">↗ +4.1%</span>
+                        <div class="kpi-card live-card">
+                            <div class="kpi-header">
+                                <h3>Container Traffic</h3>
+                                <span class="kpi-trend" id="container-trend">Loading...</span>
                             </div>
-                            <div class="card-metric">885K</div>
-                            <p class="card-subtitle">TEUs processed</p>
+                            <div class="kpi-value" id="live-container-traffic">Loading...</div>
+                            <div class="kpi-subtitle" id="container-subtitle">TEUs processed</div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Cross-border Trade</h3>
-                                <span class="card-badge">↗ +3.5%</span>
+                        <div class="kpi-card live-card">
+                            <div class="kpi-header">
+                                <h3>Market Performance</h3>
+                                <span class="kpi-trend" id="market-trend">Loading...</span>
                             </div>
-                            <div class="card-metric">€10.6B</div>
-                            <p class="card-subtitle">North-South trade value</p>
+                            <div class="kpi-value" id="live-market-index">Loading...</div>
+                            <div class="kpi-subtitle" id="market-subtitle">Supply chain index</div>
                         </div>
                     </div>
 
-                    <!-- Charts Section -->
-                    <div class="card-grid grid-2">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Monthly Trade Trends (2025)</h3>
-                                <button class="btn btn--sm" onclick="generateTradePDF()">Export Chart</button>
+                    <!-- Live Charts Section -->
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Live Trade Trends</h3>
+                                <div class="chart-controls">
+                                    <button class="btn btn-sm btn-outline" onclick="exportLiveChart('tradeChart')">Export</button>
+                                    <span class="live-indicator small">LIVE</span>
+                                </div>
                             </div>
-                            <canvas id="tradeChart" width="400" height="200"></canvas>
+                            <canvas id="liveTradeChart" width="400" height="200"></canvas>
                         </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Port Throughput by Cargo Type</h3>
-                                <button class="btn btn--sm" onclick="generatePortPDF()">Export Chart</button>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Real-time Port Analytics</h3>
+                                <div class="chart-controls">
+                                    <button class="btn btn-sm btn-outline" onclick="exportLiveChart('portChart')">Export</button>
+                                    <span class="live-indicator small">LIVE</span>
+                                </div>
                             </div>
-                            <canvas id="portChart" width="400" height="200"></canvas>
+                            <canvas id="livePortChart" width="400" height="200"></canvas>
                         </div>
 
-                        <div class="card" style="grid-column: 1 / -1;">
-                            <div class="card-header">
-                                <h3 class="card-title">Top Export Commodities</h3>
-                                <button class="btn btn--sm" onclick="generateCommodityPDF()">Export Chart</button>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Live Export Performance</h3>
+                                <div class="chart-controls">
+                                    <button class="btn btn-sm btn-outline" onclick="exportLiveChart('exportChart')">Export</button>
+                                    <span class="live-indicator small">LIVE</span>
+                                </div>
                             </div>
-                            <canvas id="commodityChart" width="800" height="200"></canvas>
+                            <canvas id="liveExportChart" width="400" height="200"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Other pages will be added based on existing content structure -->
-            <!-- Upload, Case Studies, About, Contact pages follow same card-grid pattern -->
+            <!-- Data Upload Page -->
+            <div id="upload-page" class="page">
+                <div class="container">
+                    <div class="page-header">
+                        <h2>Data Upload & Live Analysis</h2>
+                        <p>Upload your supply chain data for personalized analytics with live market comparison</p>
+                    </div>
 
-        </div>
-    </section>
+                    <div class="upload-section">
+                        <div class="upload-area">
+                            <div class="upload-icon">📁</div>
+                            <h3>Upload Your Supply Chain Data</h3>
+                            <p>Compare with live Irish market data</p>
+                            <input type="file" id="dataFileInput" accept=".csv,.xlsx,.xls" style="display: none;">
+                            <button class="btn btn-primary" onclick="document.getElementById('dataFileInput').click()">Choose Files</button>
+                        </div>
 
-    <!-- PDF Generation Modal -->
-    <div id="pdf-progress-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div style="text-align: center;">
-                <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
-                <h3>Generating Professional PDF Report</h3>
-                <div style="width: 100%; height: 8px; background: var(--color-gray-200); 
-                            border-radius: 4px; margin: 1.5rem 0; overflow: hidden;">
-                    <div id="progress-fill" style="height: 100%; background: var(--gradient-primary); 
-                                                   width: 0%; transition: width 0.3s ease; border-radius: 4px;"></div>
+                        <div class="template-section">
+                            <h3>Live Data Integration</h3>
+                            <p>Your uploaded data will be automatically compared with live market data from:</p>
+                            <div class="data-sources">
+                                <div class="source-item">
+                                    <span class="source-icon">🌍</span>
+                                    <span>World Bank Trade APIs</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-icon">📊</span>
+                                    <span>OECD Statistical Data</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-icon">🚢</span>
+                                    <span>Dublin Port Real-time Data</span>
+                                </div>
+                                <div class="source-item">
+                                    <span class="source-icon">🇮🇪</span>
+                                    <span>CSO Ireland Trade Statistics</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" onclick="downloadTemplate()">📄 Download Template</button>
+                        </div>
+
+                        <div id="upload-results" class="upload-results" style="display: none;">
+                            <h3>Live Analysis Results</h3>
+                            <div id="upload-charts"></div>
+                            <button class="btn btn-primary" onclick="generateLiveUploadPDF()">📊 Download Live Analysis Report</button>
+                        </div>
+                    </div>
                 </div>
-                <p id="progress-text">Preparing charts and analytics...</p>
+            </div>
+
+            <!-- Case Studies Page -->
+            <div id="case-studies-page" class="page">
+                <div class="container">
+                    <div class="page-header">
+                        <h2>SME Success Stories with Live Data</h2>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="generateCaseStudiesPDF()">📋 Download Case Studies Report</button>
+                        </div>
+                    </div>
+
+                    <div class="case-studies-grid">
+                        <div class="case-study-card">
+                            <div class="case-study-header">
+                                <h3>Dublin Food Distributor</h3>
+                                <span class="sector-badge">Food & Beverage</span>
+                                <div class="live-comparison">
+                                    <span class="live-dot"></span>
+                                    <span>Live market comparison</span>
+                                </div>
+                            </div>
+                            <div class="case-study-content">
+                                <div class="challenge">
+                                    <h4>Challenge</h4>
+                                    <p>High inventory carrying costs and frequent stockouts affecting customer satisfaction</p>
+                                </div>
+                                <div class="solution">
+                                    <h4>Solution</h4>
+                                    <p>Implemented demand forecasting system using live Dublin Port throughput data and real-time market analytics</p>
+                                </div>
+                                <div class="results">
+                                    <h4>Results (Live Market Verified)</h4>
+                                    <div class="results-grid">
+                                        <div class="result-item">
+                                            <div class="result-value">15%</div>
+                                            <div class="result-label">Inventory Reduction</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">€45K</div>
+                                            <div class="result-label">Annual Savings</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">78%</div>
+                                            <div class="result-label">Stockout Reduction</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">6 weeks</div>
+                                            <div class="result-label">Implementation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional case studies with similar live data integration -->
+                        <div class="case-study-card">
+                            <div class="case-study-header">
+                                <h3>Cork Pharmaceutical Supplier</h3>
+                                <span class="sector-badge">Pharmaceuticals</span>
+                                <div class="live-comparison">
+                                    <span class="live-dot"></span>
+                                    <span>Real-time trade data</span>
+                                </div>
+                            </div>
+                            <div class="case-study-content">
+                                <div class="challenge">
+                                    <h4>Challenge</h4>
+                                    <p>Long lead times from EU suppliers impacting production schedules</p>
+                                </div>
+                                <div class="solution">
+                                    <h4>Solution</h4>
+                                    <p>Diversified supplier base using live trade data and implemented real-time tracking across supply chain</p>
+                                </div>
+                                <div class="results">
+                                    <h4>Results (OECD Data Verified)</h4>
+                                    <div class="results-grid">
+                                        <div class="result-item">
+                                            <div class="result-value">22%</div>
+                                            <div class="result-label">Lead Time Reduction</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">€78K</div>
+                                            <div class="result-label">Annual Savings</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">96%</div>
+                                            <div class="result-label">Delivery Reliability</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">10 weeks</div>
+                                            <div class="result-label">Implementation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="case-study-card">
+                            <div class="case-study-header">
+                                <h3>Galway Electronics Retailer</h3>
+                                <span class="sector-badge">Electronics</span>
+                                <div class="live-comparison">
+                                    <span class="live-dot"></span>
+                                    <span>World Bank verified</span>
+                                </div>
+                            </div>
+                            <div class="case-study-content">
+                                <div class="challenge">
+                                    <h4>Challenge</h4>
+                                    <p>Excess inventory tying up working capital and increasing storage costs</p>
+                                </div>
+                                <div class="solution">
+                                    <h4>Solution</h4>
+                                    <p>Implemented just-in-time inventory management with live market data automation</p>
+                                </div>
+                                <div class="results">
+                                    <h4>Results (Live Data Tracked)</h4>
+                                    <div class="results-grid">
+                                        <div class="result-item">
+                                            <div class="result-value">18%</div>
+                                            <div class="result-label">Carrying Cost Reduction</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">€32K</div>
+                                            <div class="result-label">Annual Savings</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">4.2x</div>
+                                            <div class="result-label">Inventory Turns</div>
+                                        </div>
+                                        <div class="result-item">
+                                            <div class="result-value">8 weeks</div>
+                                            <div class="result-label">Implementation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div id="about-page" class="page">
+                <div class="container">
+                    <div class="about-section">
+                        <div class="about-header">
+                            <h2>About Ireland Supply Chain Pulse</h2>
+                            <p>Empowering Irish SMEs with live data-driven supply chain insights</p>
+                        </div>
+
+                        <div class="creator-section">
+                            <div class="creator-card">
+                                <div class="creator-info">
+                                    <div class="creator-photo-placeholder">
+                                        <div class="initials">SS</div>
+                                    </div>
+                                    <div class="creator-details">
+                                        <h3>Sairam Sundararaman</h3>
+                                        <p class="creator-title">Creator & Supply Chain Analyst</p>
+                                        <div class="creator-credentials">
+                                            <div class="credential">
+                                                <span class="icon">🎓</span>
+                                                <span>Masters student at University College Dublin (UCD)</span>
+                                            </div>
+                                            <div class="credential">
+                                                <span class="icon">📞</span>
+                                                <span>+353 (89) 969 3641</span>
+                                            </div>
+                                            <div class="credential">
+                                                <span class="icon">📧</span>
+                                                <span>sairamoffl99@gmail.com</span>
+                                            </div>
+                                            <div class="credential">
+                                                <span class="icon">📍</span>
+                                                <span>Dublin, Ireland</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="creator-mission">
+                                    <h4>Mission</h4>
+                                    <p>To democratize supply chain analytics for Irish SMEs by providing accessible, real-time insights using live data from official sources including World Bank, OECD, Dublin Port Authority, and Central Statistics Office Ireland. Through live data visualization and proven optimization strategies, we help businesses reduce costs, improve efficiency, and build resilient supply chains with current market intelligence.</p>
+                                </div>
+
+                                <div class="live-data-sources">
+                                    <h4>Live Data Sources</h4>
+                                    <div class="data-sources-grid">
+                                        <div class="data-source">
+                                            <span class="source-icon">🌍</span>
+                                            <div>
+                                                <h5>World Bank WITS</h5>
+                                                <p>Real-time trade statistics</p>
+                                            </div>
+                                        </div>
+                                        <div class="data-source">
+                                            <span class="source-icon">📊</span>
+                                            <div>
+                                                <h5>OECD Database</h5>
+                                                <p>Economic indicators</p>
+                                            </div>
+                                        </div>
+                                        <div class="data-source">
+                                            <span class="source-icon">🚢</span>
+                                            <div>
+                                                <h5>Dublin Port Authority</h5>
+                                                <p>Port throughput data</p>
+                                            </div>
+                                        </div>
+                                        <div class="data-source">
+                                            <span class="source-icon">🇮🇪</span>
+                                            <div>
+                                                <h5>CSO Ireland</h5>
+                                                <p>Official trade statistics</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="expertise-areas">
+                                    <h4>Expertise</h4>
+                                    <div class="expertise-tags">
+                                        <span class="expertise-tag">Live Data Integration</span>
+                                        <span class="expertise-tag">Supply Chain Optimization</span>
+                                        <span class="expertise-tag">Real-time Analytics</span>
+                                        <span class="expertise-tag">SME Consulting</span>
+                                        <span class="expertise-tag">API Development</span>
+                                        <span class="expertise-tag">Market Intelligence</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page -->
+            <div id="contact-page" class="page">
+                <div class="container">
+                    <div class="contact-section">
+                        <div class="contact-header">
+                            <h2>Get in Touch</h2>
+                            <p>Have questions about supply chain optimization or need live data consulting?</p>
+                        </div>
+
+                        <div class="contact-content">
+                            <div class="contact-info">
+                                <h3>Contact Information</h3>
+                                <div class="contact-items">
+                                    <div class="contact-item">
+                                        <span class="contact-icon">📞</span>
+                                        <div class="contact-details">
+                                            <h4>Phone</h4>
+                                            <p>+353 (89) 969 3641</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="contact-icon">📧</span>
+                                        <div class="contact-details">
+                                            <h4>Email</h4>
+                                            <p>sairamoffl99@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="contact-icon">📍</span>
+                                        <div class="contact-details">
+                                            <h4>Location</h4>
+                                            <p>Dublin, Ireland</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="contact-icon">🎓</span>
+                                        <div class="contact-details">
+                                            <h4>Institution</h4>
+                                            <p>University College Dublin (UCD)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="contact-form">
+                                <h3>Send a Message</h3>
+                                <form id="contactForm">
+                                    <div class="form-group">
+                                        <label for="contactName">Name</label>
+                                        <input type="text" id="contactName" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactEmail">Email</label>
+                                        <input type="email" id="contactEmail" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactSubject">Subject</label>
+                                        <input type="text" id="contactSubject" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactMessage">Message</label>
+                                        <textarea id="contactMessage" class="form-control" rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Live Data Status Modal -->
+    <div id="data-status-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="data-status-content">
+                <h3>Live Data Status</h3>
+                <div class="api-status-list">
+                    <div class="api-status-item">
+                        <span class="api-name">World Bank WITS API</span>
+                        <span class="status-indicator" id="wb-status">checking...</span>
+                    </div>
+                    <div class="api-status-item">
+                        <span class="api-name">OECD Statistics API</span>
+                        <span class="status-indicator" id="oecd-status">checking...</span>
+                    </div>
+                    <div class="api-status-item">
+                        <span class="api-name">Dublin Port Data</span>
+                        <span class="status-indicator" id="port-status">checking...</span>
+                    </div>
+                    <div class="api-status-item">
+                        <span class="api-name">CSO Ireland API</span>
+                        <span class="status-indicator" id="cso-status">checking...</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="closeDataStatusModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Generation Progress Modal -->
+    <div id="pdf-progress-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="pdf-progress">
+                <div class="progress-icon">📊</div>
+                <h3>Generating Live Data PDF Report</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p id="progress-text">Fetching live data from APIs...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="live_app.js"></script>
 </body>
 </html>
